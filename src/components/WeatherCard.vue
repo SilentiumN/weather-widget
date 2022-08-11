@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <router-view />
-  </div>
+<div class="weather-item">
+    {{weatherInfo}}
+</div>
 </template>
 
 <script>
 export default {
-    name: "App",
     components: {
 
     },
@@ -17,9 +16,15 @@ export default {
     },
     methods: {
         
+    },
+    props: {
+        weatherInfo: {
+            type: Object,
+            require: true
+        }
     }
 }
 </script>
 
-<style>
+<style scoped>
 </style>

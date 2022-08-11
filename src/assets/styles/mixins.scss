@@ -1,0 +1,15 @@
+@mixin flexible($type) {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  @if $type == "between" {
+    justify-content: space-between;
+  } @else if $type == "center" {
+    justify-content: space-between;
+  }
+}
+
+@mixin flexDirection($direction, $wrap) {
+  display: flex;
+  flex-flow: $direction $wrap;
+}
