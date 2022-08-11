@@ -5,7 +5,7 @@
   @if $type == "between" {
     justify-content: space-between;
   } @else if $type == "center" {
-    justify-content: space-between;
+    justify-content: center;
   }
 }
 

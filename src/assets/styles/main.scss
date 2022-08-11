@@ -8,6 +8,8 @@
 * {
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
+    color: darkColor(1);
+    line-height: 1.6;
 }
 
 button {
@@ -58,5 +60,68 @@ button {
     width: calc((100% - $defaultWhitespace) / 2)
 }
 
+.compact-weather-main-info {
+    @include flexible('between');
+    .weather-geoposition-info {
+        @include flexDirection(column, nowrap);  
+    }
 
+}
+
+.compact-weather-dsc {
+    @include flexible('between');
+}
+
+.weather-city {
+    font-size: $small;
+    font-weight: 500;
+}
+
+.weather-time {
+    font-size: $small;
+    font-weight: 400;
+}
+
+.weather-temp-current {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.weather-type {
+    font-size: $small;
+    font-weight: 400;
+    img {
+        width: 24px;
+    }
+    @include flexible(null);
+}
+
+.weather-temp-additional {
+    font-size: $small;
+    font-weight: 400;
+    @include flexible(null);
+}
+
+
+
+
+.small {
+    font-size: $small;
+}
+
+.sm-plus {
+    font-size: $small;
+}
+
+.normal {
+    font-size: $small;
+}
+
+.large {
+    font-size: $small;
+}
+
+.lg-plus {
+    font-size: $small;
+}
 

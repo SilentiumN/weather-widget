@@ -40,10 +40,10 @@ export default createStore({
             let newWeather = {
                 icon: result.weather[0].icon,
 
-                tempCurrent: Math.round(result.main.temp) + '℃',
-                tempFeels: Math.round(result.main.feels_like) + '℃',
-                tempMin: Math.round(result.main.temp_min) + '℃',
-                tempMax: Math.round(result.main.temp_max) + '℃',
+                tempCurrent: Math.round(result.main.temp) + '°',
+                tempFeels: Math.round(result.main.feels_like) + '°',
+                tempMin: Math.round(result.main.temp_min) + '°',
+                tempMax: Math.round(result.main.temp_max) + '°',
 
                 weatherMain: result.weather[0].main,
                 weatherDsc: result.weather[0].description,
@@ -56,7 +56,7 @@ export default createStore({
                 sunset: time(result.sys.sunset),
                 currentTime: time(result.dt),
                 city: result.name,
-                country: result.sys.countryName + result.sys.unicodeFlag,
+                country: result.sys.countryName + ' ' + result.sys.unicodeFlag,
 
                 visibility: (result.visibility / 1000) + 'km',
                 humidity: result.main.humidity + '%',

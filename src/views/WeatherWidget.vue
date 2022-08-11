@@ -3,9 +3,17 @@
     <div class="widget-header">
         Hello, my dear friend! 
         <button class="btn-setting">
-            <Icon :name="'setting'"/>
+            <Icon :name="'setting'" :color="'#555'"/>
         </button>
     </div>
+    <Icon :name="'sunrise'" :color="'#555'"/>
+    <Icon :name="'sunset'" :color="'#555'"/>
+    <Icon :name="'wind'" :color="'#555'"/>
+    <Icon :name="'humidity'" :color="'#555'"/>
+    <Icon :name="'visibility'" :color="'#555'"/>
+    <Icon :name="'pressure'" :color="'#555'"/>
+    <Icon :name="'tempMin'" :color="'#555'"/>
+    <Icon :name="'tempMax'" :color="'#555'"/>
     <div class="weather-box" v-if="loadedLocalData">
         <WeatherCards v-for="(weatherItem, index) in weatherCards" :key="index" :weatherInfo="weatherItem"/>
         <WeatherCards v-for="(weatherItem, index) in weatherCards" :key="index" :weatherInfo="weatherItem"/>
