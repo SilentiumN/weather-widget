@@ -3,26 +3,11 @@
     <div class="widget-box" v-if="!settings">
       <div class="widget-header">
         Hello, my dear friend!
-        <button class="btn-setting btn-white" @click="toggleSettings">
+        <button class="btn-setting btn-transparent" @click="toggleSettings">
           <Icon :name="'setting'" :color="'#555'" />
         </button>
       </div>
       <div class="weather-box" v-if="loadedLocalData">
-        <WeatherCards
-          v-for="(weatherItem, index) in weatherCards"
-          :key="index"
-          :weatherInfo="weatherItem"
-        />
-        <WeatherCards
-          v-for="(weatherItem, index) in weatherCards"
-          :key="index"
-          :weatherInfo="weatherItem"
-        />
-        <WeatherCards
-          v-for="(weatherItem, index) in weatherCards"
-          :key="index"
-          :weatherInfo="weatherItem"
-        />
         <WeatherCards
           v-for="(weatherItem, index) in weatherCards"
           :key="index"
@@ -43,8 +28,8 @@ export default {
   components: {
     Icon,
     WeatherCards,
-    Settings
-  },
+    Settings,
+},
   data() {
     return {
       loadedLocalData: false,

@@ -14,7 +14,7 @@
 
 html {
     font-size: 16px;
-    @media (max-width: 375px) and (min-width: 325px){
+    @media (max-width: 375px){
         font-size: 12px;
     }
 }
@@ -40,8 +40,8 @@ button {
     -webkit-animation: rotation 2s infinite linear;
 }
 
-.btn-white {
-    background: $white;
+.btn-transparent {
+    background: transparent;
 }
 
 
@@ -71,7 +71,7 @@ button {
 
 .weather-item {
     width: calc((100% - $defaultWhitespace) / 2);
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     margin-top: $defaultWhitespace;
@@ -84,7 +84,7 @@ button {
 
 .weather-city {
     font-size: $small;
-    font-weight: 600;
+    font-weight: 700;
     text-align: center;
 }
 
@@ -105,7 +105,7 @@ button {
 
 .weather-temp-additional {
     font-size: $small;
-    font-weight: 400;
+    font-weight: 600;
     @include flexible('center');
     .text {
         margin: 0 5px;
@@ -115,6 +115,7 @@ button {
 .weather-dsc {
     font-size: $small;
     text-align: center;
+    font-weight: 500;
 }
 
 .weather-item-figure {
@@ -155,10 +156,15 @@ button {
     font-size: $small;
 }
 
+.widget-btn-box {
+@include flexDirection(row, wrap);
+justify-content: space-between;
+}
+
 .checkbox {
     background: darkColor(0.15);
     border-radius: 12px;
-    width: 38px;
+    width: 29px;
     padding: 3px;
     margin-left: $defaultWhitespace;
 }
@@ -166,8 +172,8 @@ button {
 .circle {
     box-shadow: 0px 2px 8px darkColor(0.35);
     background: $white;
-    width: 17px;
-    height: 17px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
 }
 
@@ -182,17 +188,34 @@ button {
 }
 
 .circle-active {
-    margin-left: 15px;
+    margin-left: 12px;
 }
 
 .toggleCompact {
-    @include flexible(null);
+    display: flex;
+    align-items: center;
     color: $grey;
+    font-size: $sm-plus;
 }
 
 .location-card {
-    background: $grey;
-    border-right: 20px;
-    padding: 5px;
+    background: $white;
+    box-shadow: 0px 0px 15px darkColor(0.08);
+    border-radius: 10px;
+    border: 1px solid darkColor(0.1);
+    padding: calc($defaultWhitespace - 5px);
+    @include flexible('between');
+    margin-top: $defaultWhitespace;
+    .text {
+        width: calc(100% - 64px);
+        color: $grey;
+        font-size: $sm-plus;
+        font-weight: 400;
+    }
+}
+
+.spinner {
+    animation: rotation 2s infinite linear;
+    -webkit-animation: rotation 2s infinite linear;
 }
 

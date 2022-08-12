@@ -1,34 +1,36 @@
 <template>
-<div class="location-card">
-    <Icon :name="'burger'" :color="'#FFFDFA'"/>
-    {{location.city + ', ' + location.countryName}}
-    <Icon :name="'trash'" :color="'#FFFDFA'"/>
-</div>
+  <div class="location-card">
+    <button class="btn-transparent">
+      <Icon :name="'burger'" :color="'#555'" />
+    </button>
+    <span class="text">{{ location.city + ' ' + location.unicodeFlag}}</span>
+    <button class="btn-transparent" @click="deleteWeather">
+      <Icon :name="'trash'" :color="'#555'" />
+    </button>
+  </div>
 </template>
 
 <script>
-import Icon from './General/Icon.vue';
+import Icon from "./General/Icon.vue";
 export default {
-    components: {
-        Icon
+  components: {
+    Icon,
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    deleteWeather() {
+      this.$store.dispatch("deleteWeather", this.location.id);
     },
-    data() {
-        return {
-
-        }
+  },
+  props: {
+    location: {
+      type: Object,
+      require: true,
     },
-    methods: {
-        
-    },
-    props: {
-        location: {
-            type: Object,
-            require: true
-        }
-    }
-    
-}
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
