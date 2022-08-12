@@ -25,16 +25,61 @@ export default createStore({
             state.longitude = coords.longitude;
         },
         addLocation(state, result) {
-            let newLocation = {country: result.sys.country, countryName: result.sys.countryName + result.sys.unicodeFlag, city: result.name}
+            let newLocation = {id: state.locations.length + 1 ,country: result.sys.country, countryName: result.sys.countryName + result.sys.unicodeFlag, city: result.name}
             state.locations.push(newLocation)
+            console.log(newLocation)
         },
+
         addWeather(state, result) {
             console.log(result)
             let windDirection = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "W"]
-            let time = function getDate(date) {
-                let newDate = new Date((date + result.timezone) * 1000)
-                return newDate.getUTCHours() + ':' + newDate.getUTCMinutes()
+
+            function correctionTime(number) {
+                let newNumber = '00'
+                if (number < 10) {
+                    newNumber =  '0' + number
+                }
+                else if (number >= 10) {
+                    newNumber = number
+                }
+                return newNumber
             }
+
+            function getDate(date) {
+                let newDate = new Date((date + result.timezone) * 1000)
+                return correctionTime(newDate.getUTCHours()) + ':' + correctionTime(newDate.getUTCMinutes())
+            }
+
+            function weatherBackground() {
+                let time = ''
+                let weather = ''
+                let timeInfo = function getHours(date) {
+                    return new Date(date).getTime()
+                }
+
+
+                if (timeInfo(result.sys.sunrise) <= timeInfo(result.dt) <= timeInfo(result.sys.sunset).hours) {
+                    time = 'day'
+                }
+                else {
+                    time = 'night'
+                }
+
+                weather = result.weather[0].main.toLowerCase()
+
+                if (weather != 'rain' && weather != 'thunderstorm' && weather != 'drizzle' && weather != 'atmosphere') {
+                    return weather + time
+                }
+                else if (weather === 'drizzle') {
+                    return 'rain'
+                }
+                else {
+                    return weather
+                }
+                
+            }
+
+
 
 
             let newWeather = {
@@ -46,15 +91,16 @@ export default createStore({
                 tempMax: Math.round(result.main.temp_max) + '°',
 
                 weatherMain: result.weather[0].main,
+                weatherBackground: weatherBackground(),
                 weatherDsc: result.weather[0].description,
 
                 windDeg: result.wind.deg,
                 windDirection: windDirection[Math.ceil(result.wind.deg / 22.5)],
                 windSpeed: result.wind.speed + 'km/h',
 
-                sunrise: time(result.sys.sunrise),
-                sunset: time(result.sys.sunset),
-                currentTime: time(result.dt),
+                sunrise: getDate(result.sys.sunrise),
+                sunset: getDate(result.sys.sunset),
+                currentTime: getDate(result.dt),
                 city: result.name,
                 country: result.sys.countryName + ' ' + result.sys.unicodeFlag,
 
@@ -63,6 +109,8 @@ export default createStore({
                 pressure: Math.round(result.main.pressure * 0.750062)
 
             }
+
+            console.log(newWeather)
             state.weather.push(newWeather)
         }
 
@@ -101,9 +149,9 @@ export default createStore({
                             
                             
                             if ('data' in country) {
-                                commit("addLocation", result)
                                 result.sys.countryName = country.data.name
                                 result.sys.unicodeFlag = country.data.unicodeFlag
+                                commit("addLocation", result)
                                 commit("addWeather", result)
                                 dispatch('setLocalStorageLocations')
                             }
