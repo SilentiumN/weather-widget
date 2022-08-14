@@ -8,7 +8,7 @@
     </div>
     <div class="widget-btn-box">
       <button class="btn-transparent" @click="toggleNewLocationBox">
-        <Icon :name="'addLocation'" :color="'#7a2a9a'" />
+        <Icon :name="'addLocation'" :color="'#555'" />
       </button>
       <div class="toggleCompact">
         Compact
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <div class="location-list" v-if="!addNewLocation" @dragover.prevent>
+    <div class="location-list content" v-if="!addNewLocation" @dragover.prevent>
       <LocationCard
         v-for="location in locations"
         :key="location.id"

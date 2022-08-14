@@ -1,221 +1,271 @@
-@import 'global.scss';
-@import 'animation.scss';
-@import 'fonts.scss';
-@import 'mixins.scss';
-@import 'function.scss';
-
+@import "global.scss";
+@import "animation.scss";
+@import "fonts.scss";
+@import "mixins.scss";
+@import "function.scss";
 
 * {
-    font-family: 'Montserrat', sans-serif;
-    box-sizing: border-box;
-    color: #FFFDFA;
-    line-height: 1.6;
+  font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
+  color: #fffdfa;
+  line-height: 1.6;
 }
 
 html {
-    font-size: 16px;
-    @media (max-width: 375px){
-        font-size: 12px;
-    }
+  font-size: 12px;
 }
 
-
 button {
-    border: none;
-    outline: none;
-    padding: 5px;
-    cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.1;
 }
 
 #app {
-    padding: $defaultWhitespace;
+  padding: $defaultWhitespace;
 }
 
 .icon span {
-    display: flex;
+  display: flex;
 }
 
 .btn-setting:hover {
-    animation: rotation 2s infinite linear;
-    -webkit-animation: rotation 2s infinite linear;
+  animation: rotation 2s infinite linear;
+  -webkit-animation: rotation 2s infinite linear;
 }
 
 .btn-transparent {
-    background: transparent;
+  background: transparent;
 }
 
-
 .clear_svg {
-    @include flexible('center')
+  @include flexible("center");
 }
 
 .widget-header {
-    font-size: $large;
-    @include flexible('between');
-    color: $grey;
+  font-size: $large;
+  @include flexible("between");
+  color: $grey;
+  font-weight: 600;
 }
 
 .widget-box {
-    width: 100%;
-    max-width: 400px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 15px darkColor(0.08);
-    padding: $defaultWhitespace;
+  width: 200px;
+  height: 483px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 15px darkColor(0.08);
+  padding: $defaultWhitespace;
 }
 
-.weather-box {
-    @include flexDirection(row, wrap);
-    justify-content: space-between;
-    margin-top: $defaultWhitespace;
+.content {
+  height: calc(100% - 98px);
 }
 
 .weather-item {
-    width: calc((100% - $defaultWhitespace) / 2);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-top: $defaultWhitespace;
-    border-radius: 20px;
-    padding: 10px;
-    @media (max-width: 325px) {
-        width: 100%;
-    }
+  width: 100%;
+  margin-top: $defaultWhitespace;
+  border-radius: 20px;
+  padding: 10px;
+  position: relative;
+  background: linear-gradient(90deg, darkColor(0.2), darkColor(0.1), darkColor(0.2));
+  animation: gradient 5s ease-in-out infinite;
+  background-size: 200% 200%;
 }
 
 .weather-city {
-    font-size: $small;
-    font-weight: 700;
-    text-align: center;
+  font-size: $small;
+  font-weight: 700;
+  text-align: center;
 }
 
 .weather-time {
-    font-size: $small;
-    font-weight: 400;
+  font-size: $small;
+  font-weight: 400;
 }
 
 .weather-temp-current {
-    font-size: 2.625rem;
-    font-weight: 500;
-    @include flexible('center');
-    img {
-        height: calc(2.625rem * 1.6);
-    }
+  font-size: 2.625rem;
+  font-weight: 500;
+  @include flexible("center");
+  img {
+    height: calc(2.625rem * 1.6);
+  }
 }
 
-
 .weather-temp-additional {
-    font-size: $small;
-    font-weight: 600;
-    @include flexible('center');
-    .text {
-        margin: 0 5px;
-    }
+  font-size: $small;
+  font-weight: 600;
+  @include flexible("center");
+  .text {
+    margin: 0 5px;
+  }
 }
 
 .weather-dsc {
-    font-size: $small;
-    text-align: center;
-    font-weight: 500;
+  font-size: $small;
+  text-align: center;
+  font-weight: 500;
 }
+
+.weather-background {
+    width: 100%;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 10px;
+  }
 
 .weather-item-figure {
-    padding-top: 100%;
-    margin: 0;
-    position: relative;
-    & section {
-        @include flexDirection(column, nowrap);
+  padding-top: 100%;
+  margin: 0;
+  position: relative;
+  & section {
+    @include flexDirection(column, nowrap);
     justify-content: space-between;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+  }
 }
 
-
-
+.weather-loading {
+  display: flex;
+}
 
 .small {
-    font-size: $small;
+  font-size: $small;
 }
 
 .sm-plus {
-    font-size: $small;
+  font-size: $small;
 }
 
 .normal {
-    font-size: $small;
+  font-size: $small;
 }
 
 .large {
-    font-size: $small;
+  font-size: $small;
 }
 
 .lg-plus {
-    font-size: $small;
+  font-size: $small;
 }
 
 .widget-btn-box {
-@include flexDirection(row, wrap);
-justify-content: space-between;
+  @include flexDirection(row, wrap);
+  justify-content: space-between;
+  margin-top: $defaultWhitespace;
 }
 
 .checkbox {
-    background: darkColor(0.15);
-    border-radius: 12px;
-    width: 29px;
-    padding: 3px;
-    margin-left: $defaultWhitespace;
+  background: darkColor(0.15);
+  border-radius: 12px;
+  width: 29px;
+  padding: 3px;
+  margin-left: $defaultWhitespace;
 }
 
 .circle {
-    box-shadow: 0px 2px 8px darkColor(0.35);
-    background: $white;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
+  box-shadow: 0px 2px 8px darkColor(0.35);
+  background: $white;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
 }
 
-.checkbox, .circle {
-    transition: all 0.7s ease;
-    -moz-transition: all 0.7s ease;
-    -webkit-transition: all 0.7s ease;
+.checkbox,
+.circle {
+  transition: all 0.7s ease;
+  -moz-transition: all 0.7s ease;
+  -webkit-transition: all 0.7s ease;
 }
 
 .checkbox-active {
-    background: #7a2a9a !important;
+  background: #555 !important;
 }
 
 .circle-active {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 .toggleCompact {
-    display: flex;
-    align-items: center;
-    color: $grey;
-    font-size: $sm-plus;
+  display: flex;
+  align-items: center;
+  color: $grey;
+  font-size: $sm-plus;
+}
+
+.location-list {
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and EDGE */
+  scrollbar-width: none; /* Firefox */
+}
+
+.location-list::-webkit-scrollbar {
+  display: none;
 }
 
 .location-card {
-    background: $white;
-    box-shadow: 0px 0px 15px darkColor(0.08);
-    border-radius: 10px;
-    border: 1px solid darkColor(0.1);
-    padding: calc($defaultWhitespace - 5px);
-    @include flexible('between');
-    margin-top: $defaultWhitespace;
-    .text {
-        width: calc(100% - 64px);
-        color: $grey;
-        font-size: $sm-plus;
-        font-weight: 400;
-    }
+  @include locationCard("ligth");
+  @include flexible("between");
+  .text {
+    width: calc(100% - 64px);
+    color: $grey;
+    font-size: $sm-plus;
+    font-weight: 400;
+  }
 }
 
 .spinner {
-    animation: rotation 2s infinite linear;
-    -webkit-animation: rotation 2s infinite linear;
+  animation: rotation 2s infinite linear;
+  -webkit-animation: rotation 2s infinite linear;
 }
 
+.select-input {
+  @include locationCard("ligth");
+  position: relative;
+  font-size: $sm-plus;
+  select {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+.state-box {
+  margin-top: $defaultWhitespace;
+  @include flexible("center");
+}
+
+.add-new-city-btn {
+  @include locationCard("dark");
+  font-size: $sm-plus;
+  font-weight: 600;
+}
+
+.weather-toggle-page-box {
+  @include flexible("center");
+  margin-top: $defaultWhitespace;
+}
+
+.add-city-success {
+  margin-top: $defaultWhitespace;
+  color: $grey;
+  text-align: center;
+  font-size: $sm-plus;
+}

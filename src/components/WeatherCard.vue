@@ -1,15 +1,13 @@
 <template>
-  <div
-    class="weather-item"
-    :style="{
-      backgroundImage:
-        'url(' +
-        require('../assets/images/' + weatherInfo.weatherBackground + '.jpg') +
-        ')',
-    }"
-  >
+  <div class="weather-item">
+    <img
+      class="weather-background"
+      :src="require(`../assets/images/${weatherInfo.weatherBackground}.jpg`)"
+      @load="backgroundLoading()"
+      v-show="backgroundLoadingValue"
+    />
     <figure class="weather-item-figure">
-      <section>
+      <section  v-show="backgroundLoadingValue">
         <div class="weather-city">
           {{ weatherInfo.city }}
         </div>
@@ -43,9 +41,15 @@ export default {
     Icon,
   },
   data() {
-    return {};
+    return {
+      backgroundLoadingValue: false,
+    };
   },
-  methods: {},
+  methods: {
+    backgroundLoading() {
+      this.backgroundLoadingValue = true;
+    },
+  },
   props: {
     weatherInfo: {
       type: Object,

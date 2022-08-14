@@ -1,54 +1,95 @@
 <template>
   <div>
-    <div v-if="addedCitySuccess == null && !tryAddedCity">
-      <select
-        v-model="country"
-        v-if="loadedCountries"
-        :style="{ color: '#555' }"
-      >
-        <option
-          v-for="(country, index) in countries"
-          :key="index"
-          :value="country"
+    <div v-if="tryAddedCity === false">
+      <div v-if="addedCitySuccess == null">
+        <!--Countries list-->
+        <div v-if="loadedCountries">
+          <!--Countries list get success-->
+          <div class="select-input" v-if="countries.length != 0">
+            {{ countryValue }}
+            <select v-model="country">
+              <option
+                v-for="(country, index) in countries"
+                :key="index"
+                :value="country"
+              >
+                {{ country.name + " " + country.unicodeFlag }}
+              </option>
+            </select>
+          </div>
+          <!--Countries list get error-->
+          <div v-else class="add-city-success">Error getting countries</div>
+        </div>
+
+        <!--Cities list-->
+        <div v-if="country != null">
+          <!--Cities list get success-->
+          <div class="select-input" v-if="loadedCities && cities.length != 0">
+            {{ cityValue }}
+            <select v-model="city">
+              <option
+                v-for="(city, index) in cities"
+                :key="index"
+                :value="city"
+              >
+                {{ city }}
+              </option>
+            </select>
+          </div>
+          <!--Cities list get error-->
+          <div
+            v-else-if="loadedCities && cities.length === 0"
+            class="add-city-success"
+          >
+            Cities in {{ country.name }} not found
+          </div>
+          <!--Cities list loading-->
+          <div v-else class="state-loading">
+            <State :sizeStateIcon="24" :color="'#555'" :state="'loading'" />
+          </div>
+        </div>
+
+        <!--Add button-->
+        <button
+          v-if="country != null && city != null"
+          class="add-new-city-btn"
+          @click="addNewCity"
         >
-          {{ country.name + " " + country.unicodeFlag }}
-        </option>
-      </select>
-      <select
-        v-model="city"
-        :style="{ color: '#555' }"
-        v-if="country != null && loadedCities && cities.length != 0"
-      >
-        <option v-for="(city, index) in cities" :key="index" :value="city">
-          {{ city }}
-        </option>
-      </select>
-      <div
-        v-else-if="country != null && loadedCities && cities.length === 0"
-        :style="{ color: '#555' }"
-      >
-        Cities in {{ country.name }} not found
+          Add
+        </button>
       </div>
-      <button
-        v-if="country != null && city != null"
-        :style="{ color: '#555' }"
-        @click="addNewCity"
-      >
-        Add
-      </button>
     </div>
-    <div v-if="!addedCitySuccess && !tryAddedCity">false</div>
-    <div v-if="addedCitySuccess && !tryAddedCity">true</div>
-    <div v-else>
-      <span><Icon :name="'spinner'" :color="'#555'"/></span>
+    <!-- State Icon Box -->
+    <div>
+      <State
+        :sizeStateIcon="50"
+        :state="addedCitySuccess"
+        v-if="addedCitySuccess != null"
+      />
+      <State
+        :sizeStateIcon="50"
+        :color="'#555'"
+        :state="'loading'"
+        v-if="tryAddedCity === true || loadedCountries === false"
+      />
     </div>
+    <div
+      class="add-city-success"
+      v-if="addedCitySuccess != null"
+    >
+      {{ successInfo }}
+    </div>
+    <button class="add-new-city-btn" v-if="addedCitySuccess != null" @click="clearAddedCitySuccess">
+      {{ successInfoBtn }}
+    </button>
   </div>
 </template>
 
 <script>
 import Icon from "./General/Icon.vue";
+import State from "./State.vue";
 export default {
-  components: { Icon },
+  components: { Icon, State },
   data() {
     return {
       countries: [],
@@ -92,6 +133,11 @@ export default {
           this.tryAddedCity = false;
         });
     },
+    clearAddedCitySuccess() {
+      this.country = null
+      this.city = null
+      this.addedCitySuccess = null
+    }
   },
   mounted() {
     this.getAllCountries();
@@ -102,6 +148,36 @@ export default {
       if (this.country != null) {
         console.log(this.country.name);
         await this.getCities(this.country.name);
+      }
+    },
+  },
+  computed: {
+    cityValue() {
+      if (this.city != null) {
+        return this.city;
+      } else {
+        return "Chose city";
+      }
+    },
+    countryValue() {
+      if (this.country != null) {
+        return this.country.name + " " + this.country.unicodeFlag;
+      } else {
+        return "Chose country";
+      }
+    },
+    successInfo() {
+      if (this.addedCitySuccess === "done") {
+        return "City added";
+      } else {
+        return "City not found in Weather API";
+      }
+    },
+    successInfoBtn() {
+      if (this.addedCitySuccess === "done") {
+        return "Nice!";
+      } else {
+        return "Try add new city";
       }
     },
   },

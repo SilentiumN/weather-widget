@@ -11,6 +11,7 @@ export default createStore({
       weather: [],
       locations: [],
       countries: [],
+      pageWeather: 0,
     };
   },
 
@@ -19,6 +20,18 @@ export default createStore({
   getters: {},
 
   mutations: {
+    clearPageWeather(state, number) {
+      console.log(state.pageWeather);
+      state.pageWeather = number;
+      console.log(state.pageWeather);
+    },
+    updatePageWeather(state, operation) {
+      if (operation === "increment") {
+        state.pageWeather += 1;
+      } else if (operation === "reduction") {
+        state.pageWeather -= 1;
+      }
+    },
     updateLocationsPosition(state, position) {
       console.log(position);
       let fromIndex = position.fromIndex;
@@ -47,7 +60,7 @@ export default createStore({
         country: result.sys.country,
         countryName: result.sys.countryName,
         city: result.name,
-        unicodeFlag: result.sys.unicodeFlag
+        unicodeFlag: result.sys.unicodeFlag,
       };
       state.locations.push(newLocation);
       console.log(newLocation);
@@ -232,7 +245,11 @@ export default createStore({
           }
         });
       } else {
-        for (const item of state.locations) {
+        let separateLocation = state.locations.slice(
+          state.pageWeather * 2,
+          (state.pageWeather + 1) * 2
+        );
+        for (const item of separateLocation) {
           await WeatherServices.getWeather(
             item.country,
             item.city,
@@ -283,7 +300,7 @@ export default createStore({
       return cities;
     },
     async addNewLocation({ state, commit, dispatch }, sendData) {
-      let success = false;
+      let success = "error";
       await WeatherServices.getWeather(
         sendData.country,
         sendData.city,
@@ -303,20 +320,57 @@ export default createStore({
             dispatch("setLocalStorageLocations");
             console.log("state", state);
             console.log("local", localStorage);
-            success = true; //req success
+            success = "done"; //req success
+            let maxPageWeather = Math.ceil(state.locations.length / 2) - 1;
+            console.log(state.pageWeather, maxPageWeather);
+            commit("clearPageWeather", maxPageWeather);
           }
         }
       });
       return success;
     },
-    deleteWeather({ commit }, id) {
+    deleteWeather({ state, commit, dispatch }, id) {
       commit("deleteWeather", id);
       commit("deleteLocation", id);
+      dispatch("setLocalStorageLocations");
+      let maxPageWeather = Math.ceil(state.locations.length / 2) - 1;
+      console.log(state.pageWeather, maxPageWeather);
+      if (state.pageWeather > maxPageWeather) {
+        commit("clearPageWeather", maxPageWeather);
+      }
     },
     swapIndex({ commit, dispatch }, position) {
       commit("updateLocationsPosition", position);
       commit("updateWeatherPosition", position);
       dispatch("setLocalStorageLocations");
+    },
+    async getNewPageWeather({ commit, state }, operation) {
+      commit("updatePageWeather", operation);
+      if (state.weather.length < (state.pageWeather + 1) * 2 - 1) {
+        let separateLocation = state.locations.slice(
+          state.pageWeather * 2,
+          (state.pageWeather + 1) * 2
+        );
+        for (const item of separateLocation) {
+          await WeatherServices.getWeather(
+            item.country,
+            item.city,
+            process.env.VUE_APP_OPEN_WEATHER_API_KEY
+          ).then(async (result) => {
+            let country = await CountiesServices.getNameCountry(
+              result.sys.country
+            );
+            if ("data" in country) {
+              result.sys.countryName =
+                country.data.name + " " + country.data.unicodeFlag;
+              result.sys.unicodeFlag = country.data.unicodeFlag;
+              commit("addWeather", result);
+            }
+          });
+        }
+      }
+      console.log("page", state.pageWeather);
+      console.log("weather", state.weather);
     },
   },
 });
