@@ -3,20 +3,19 @@
 ## Connecting a widget to your project
 ### Connection as Vue.js component
 
-```
-* Download weather-widget
-* Import weather-widget in your project as WeatherWidget
-* Use <WeatherWidget/> in your component
-```
+
+- Download weather-widget
+- Import weather-widget in your project as WeatherWidget
+- Use <WeatherWidget/> in your component
+
 
 ### Connecting as an external script
 
-```
-* Download build.js from /dist folder
-* Add <script defer="defer" type="text/javascript" src="<path_to_build.js>"></script>
-!!IMPORTANT Don't forget defer="defer" to add to your script
-* Use <weather-widget/> in your html page
-```
+- Download build.js from /dist folder
+- Add ```<script defer="defer" type="text/javascript" src="<path_to_build.js>"></script>```
+- **IMPORTANT!!! Don't forget defer="defer" to add to your script**
+- Use ```<weather-widget/>``` in your html page
+
 
 ### Connecting as an external script (example)
 ```
@@ -39,16 +38,15 @@
 
 ## API-key for OpenWeatherAPI
 ### If you want, you can change my API-key for your API-key.
-```
-You need open weather.services.js and change this line:
 
+- You need open weather.services.js and change this line:
+```
 constructor() {
   this.apikey = '<your_api_key_from>';
 }
-
-Where your_api_key_from is API-key from https://openweathermap.org
-
 ```
+- Where your_api_key_from is API-key from https://openweathermap.org
+
 ## Run project
 ### Install dependencies 
 ```
