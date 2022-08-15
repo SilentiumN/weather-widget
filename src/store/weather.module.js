@@ -155,7 +155,7 @@ export const weatherModule = {
     getLocalStorageSize({ commit }) {
       let compactSizeValue = localStorage.getItem("compactSizeCard");
       if (compactSizeValue != null) {
-        commit("SET_SIZE_CARD", compactSizeValue);
+        commit("SET_SIZE_CARD", JSON.parse(compactSizeValue));
       }
     }
   },
@@ -223,7 +223,6 @@ export const weatherModule = {
 
       function weatherBackground() {
         let time = "";
-        let weather = "";
         let timeInfo = function getTime(date) {
           return new Date(date).getTime();
         };
@@ -237,20 +236,7 @@ export const weatherModule = {
           time = "night";
         }
 
-        weather = result.weather[0].main.toLowerCase();
-
-        if (
-          weather != "rain" &&
-          weather != "thunderstorm" &&
-          weather != "drizzle" &&
-          weather != "atmosphere"
-        ) {
-          return weather + time;
-        } else if (weather === "drizzle") {
-          return "rain";
-        } else {
-          return weather;
-        }
+       return time
       }
 
       let newWeather = {

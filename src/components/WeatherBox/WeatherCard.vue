@@ -1,19 +1,13 @@
 <template>
   <!--Weather card template-->
-  <div class="weather-card">
-    <img
-      class="weather-card-background"
-      :src="require(`@/assets/images/${weatherInfo.weatherBackground}.jpg`)"
-      @load="backgroundLoading()"
-      v-show="backgroundLoadingValue"
-    />
+  <div class="weather-card" :class="weatherInfo.weatherBackground">
 
     <!--Weather card content-->
     <figure class="weather-card-figure">
       <!--Weather card content compact-->
       <section
         class="weather-card-compact"
-        v-if="backgroundLoadingValue && compact"
+        v-show="compact"
       >
         <div class="weather-card-city">
           {{ weatherInfo.city }}
@@ -51,7 +45,7 @@
       <!--Weather card content large-->
       <section
         class="weather-card-normal"
-        v-if="backgroundLoadingValue && !compact"
+        v-if="!compact"
       >
         <div class="weather-card-city">
           {{ weatherInfo.city }}
@@ -169,16 +163,6 @@ export default {
   components: {
     IconForWeatherWidget,
   },
-  data() {
-    return {
-      backgroundLoadingValue: false,
-    };
-  },
-  methods: {
-    backgroundLoading() {
-      this.backgroundLoadingValue = true;
-    },
-  },
   props: {
     weatherInfo: {
       type: Object,
@@ -204,15 +188,15 @@ export default {
   border-radius: 20px;
   padding: 10px;
   position: relative;
-  background: linear-gradient(
-    90deg,
-    darkColor(0.2),
-    darkColor(0.1),
-    darkColor(0.2)
-  );
-  animation: gradient 5s ease-in-out infinite;
-  background-size: 200% 200%;
   color: #fffdfa;
+}
+
+.day {
+  background: linear-gradient(#728FC9, #C1D1EE);
+}
+
+.night {
+  background: linear-gradient(#2A459C, #728FC9);
 }
 
 .weather-card-figure {
