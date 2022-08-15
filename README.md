@@ -49,6 +49,7 @@
 
 - You need open weather.services.js and change this line:
 ```
+path: /src/services/weather.services.js
 constructor() {
   this.apikey = '<your_api_key_from>';
 }
