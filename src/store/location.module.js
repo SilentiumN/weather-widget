@@ -16,7 +16,6 @@ export const locationModule = {
       return state.locations.length
     },
     locationPage (state, getters, rootState) {
-      console.log(rootState)
       let pageWeather= rootState.weatherModule.pageWeather
       return state.locations.slice(
         pageWeather * 2,
@@ -27,7 +26,6 @@ export const locationModule = {
 
   mutations: {
     UPDATE_LOCATION_INDEX(state, position) {
-      console.log(position);
       let fromIndex = position.fromIndex;
       let toIndex = position.toIndex;
       let tempLocations = state.locations[fromIndex];
@@ -43,7 +41,6 @@ export const locationModule = {
     },
     SET_LOCATION(state, data) {
       state.locations = data;
-      console.log(state);
     },
     ADD_LOCATION(state, result) {
       let newLocation = {
@@ -54,15 +51,12 @@ export const locationModule = {
         unicodeFlag: result.unicodeFlag,
       };
       state.locations.push(newLocation);
-      console.log("2222", state.locations);
     },
     DELETE_LOCATION(state, id) {
-      console.log(id);
       let index = state.locations.findIndex((location) => location.id === id);
       if (index != -1) {
         state.locations.splice(index, 1);
       }
-      console.log(state.locations);
     },
   },
 
@@ -70,7 +64,6 @@ export const locationModule = {
     async getCitiesFromCountry({}, country) {
         let cities = [];
         await locationServices.getCitiesFromCountry(country).then((result) => {
-          console.log(result);
           if (result.error === false) {
             cities = result.data;
           }
@@ -85,7 +78,6 @@ export const locationModule = {
           }
         });
       }
-      console.log(state.countries);
       return state.countries;
     },
     updateLocationIndex({ commit, dispatch }, position) {
@@ -102,13 +94,11 @@ export const locationModule = {
     },
     setLocalStorageLocations({ state }) {
       localStorage.setItem("locations", JSON.stringify(state.locations));
-      console.log('localStorage', localStorage)
     },
 
     getLocalStorageLocation({ commit, state }) {
     if (state.locations.length === 0) {
         let locations = localStorage.getItem("locations");
-        console.log('location', locations)
         if (locations != null) {
           commit("SET_LOCATION", JSON.parse(locations));
         }

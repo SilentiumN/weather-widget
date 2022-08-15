@@ -45,7 +45,6 @@ export default {
       this.settings = !this.settings;
     },
     async getLocalStorageData() {
-      console.log(this.$store.state);
       this.$store.dispatch("weatherModule/getLocalStorageSize");
       await this.$store.dispatch("locationModule/checkLocalStorageLocation");
       await this.$store
