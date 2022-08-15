@@ -12,9 +12,17 @@
 ### Connecting as an external script
 
 - Download build.js from /dist folder
-- Add ```<script defer="defer" type="text/javascript" src="<path_to_build.js>"></script>```
+- Add script to the end of the body tag, but before the tag <weather-widget/>
+```
+<path_to_build.js> can be either local or external (if you uploaded the file to the server)
+```
+```
+<script defer="defer" type="text/javascript" src="<path_to_build.js>"></script>`
+```
+```
+<weather-widget/>
+```
 - **IMPORTANT!!! Don't forget defer="defer" to add to your script**
-- Use ```<weather-widget/>``` in your html page
 
 
 ### Connecting as an external script (example)
