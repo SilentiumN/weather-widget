@@ -1,8 +1,13 @@
-# untitled5
+# Weather widget vuejs
 
 ## Project setup
 ```
 npm install
+```
+
+### Create .env in root project folder
+```
+After add your API-key from https://openweathermap.org/ (example VUE_APP_OPEN_WEATHER_API_KEY="<your api key>")
 ```
 
 ### Compiles and hot-reloads for development
@@ -15,10 +20,8 @@ npm run serve
 npm run build
 ```
 
-### Lints and fixes files
+### Usage as component
 ```
-npm run lint
+<WeatherWidget/>
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
