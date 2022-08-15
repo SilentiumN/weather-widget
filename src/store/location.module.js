@@ -130,8 +130,8 @@ export const locationModule = {
 
           .catch((error) => {
             let coords = {
-              latitude: 44.5,
-              longitude: -89.5,
+              latitude: 47.5001,
+              longitude: -120.5015,
             };
             commit("UPDATE_LOCAL_LOCATION", coords);
             console.log(

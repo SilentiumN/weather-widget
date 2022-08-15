@@ -137,10 +137,9 @@ export const weatherModule = {
         return newLocation;
       }
     },
-    deleteWeather({ rootState, state, commit }, id) {
-      let locations = rootState.locationModule.locations;
+    deleteWeather({state, commit }, id) {
       commit("DELETE_WEATHER", id);
-      let maxPageWeather = Math.ceil(locations.length / 2) - 1;
+      let maxPageWeather = Math.ceil(state.weather.length / 2) - 1;
       if (state.pageWeather > maxPageWeather) {
         commit("SET_NEW_PAGE_WEATHER", maxPageWeather);
       }
@@ -255,7 +254,7 @@ export const weatherModule = {
 
         windDeg: result.wind.deg,
         windDirection: windDirection[Math.ceil(result.wind.deg / 22.5)],
-        windSpeed: result.wind.speed + "km/h",
+        windSpeed: Math.round(result.wind.speed) + "m/s",
 
         sunrise: getDate(result.sys.sunrise),
         sunset: getDate(result.sys.sunset),
@@ -263,7 +262,7 @@ export const weatherModule = {
         city: result.name + " " + result.sys.unicodeFlag,
         country: result.sys.countryName,
 
-        visibility: result.visibility / 1000 + "km",
+        visibility: Math.round(result.visibility / 1000) + "km",
         humidity: result.main.humidity + "%",
         pressure: Math.round(result.main.pressure * 0.750062),
       };
