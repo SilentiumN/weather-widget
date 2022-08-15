@@ -1,116 +1,108 @@
 <template>
-  <div>
-    <div class="widget-box" v-if="!settings">
-      <div class="widget-header">
-        Weather
-        <button class="btn-setting btn-transparent" @click="toggleSettings">
-          <Icon :name="'setting'" :color="'#555'" />
-        </button>
-      </div>
-      <div class="weather-box content" v-if="loadingWeatherCard">
-        <WeatherCards
-          v-for="(weatherItem, index) in weatherCards"
-          :key="index"
-          :weatherInfo="weatherItem"
-        />
-      </div>
-      <div v-else class="weather-loading content">
-        <State :state="'loading'" :sizeStateIcon="50" :color="'#555'" />
-      </div>
-      <div class="weather-toggle-page-box">
-        <button
-          class="btn-transparent"
-          @click="changePageWeather('reduction')"
-          :disabled="reductionButton"
-        >
-          <Icon :name="'previousPage'" :color="'#555'" />
-        </button>
-        <button
-          class="btn-transparent"
-          @click="changePageWeather('increment')"
-          :disabled="incrementButton"
-        >
-          <Icon :name="'nextPage'" :color="'#555'" />
-        </button>
-      </div>
+  <!--Weather widget template-->
+  <div class="weather-widget-box slow-show">
+    <!--Weather widget header-->
+    <div class="weather-widget-header">
+      {{ header.text }}
+      <button
+        class="btn btn-transparent"
+        :class="settings ? '' : 'weather-widget-btn-setting'"
+        @click="toggleSettings"
+      >
+        <IconForWeatherWidget :name="header.icon" :color="'#555'" />
+      </button>
     </div>
-    <Settings
-      class="widget-box"
-      v-if="settings"
-      @closeSettings="toggleSettings"
-    />
+
+    <!--Weather widget content list-->
+    <WeatherBox class="content" v-if="!settings" />
+
+    <!--Weather widget settings-->
+    <Settings class="content" v-if="settings" @closeSettings="toggleSettings" />
   </div>
 </template>
 
 <script>
-import Icon from "../components/General/Icon.vue";
-import WeatherCards from "../components/WeatherCard.vue";
-import Settings from "@/components/Settings.vue";
-import State from "@/components/State.vue";
+import IconForWeatherWidget from "@/components/Misc/IconForWeatherWidget.vue";
+import Settings from "@/components/Settings/Settings.vue";
+import WeatherBox from "@/components/WeatherBox/WeatherBox.vue";
 
 export default {
   components: {
-    Icon,
-    WeatherCards,
+    IconForWeatherWidget,
     Settings,
-    State
+    WeatherBox,
   },
   data() {
     return {
       settings: false,
     };
   },
-  methods: {
-    async getLocalStorageData() {
-      await this.$store.dispatch("getLocalWeather");
-    },
-    toggleSettings() {
-      this.settings = !this.settings;
-    },
-    async changePageWeather(operation) {
-      await this.$store.dispatch("getNewPageWeather", operation)
-    },
-  },
-  computed: {
-    locations() {
-
-      return this.$store.state.locations
-    },
-    loadingWeatherCard() {
-      if (this.weatherCards.length === this.$store.state.locations.slice(
-        this.pageWeather * 2,
-        (this.pageWeather + 1) * 2).length) {
-          return true
-        }
-        else {
-          return false
-        }
-    },
-    weatherCards() {
-      return this.$store.state.weather.slice(
-        this.pageWeather * 2,
-        (this.pageWeather + 1) * 2
-      );
-    },
-    pageWeather() {
-      return this.$store.state.pageWeather;
-    },
-    incrementButton() {
-      if (this.locations.length > (this.pageWeather + 1) * 2) {
-        return 0
-      }
-      else return 1
-    },
-    reductionButton() {
-      if(this.pageWeather > 0) {
-        return 0
-      }
-      else return 1
-    }
-  },
-  watch: {},
   mounted() {
     this.getLocalStorageData();
   },
+  methods: {
+    toggleSettings() {
+      this.settings = !this.settings;
+    },
+    async getLocalStorageData() {
+      console.log(this.$store.state);
+      this.$store.dispatch("weatherModule/getLocalStorageSize");
+      await this.$store.dispatch("locationModule/checkLocalStorageLocation");
+      await this.$store
+        .dispatch("weatherModule/getWeather")
+        .then(async (result) => {
+          if (this.locations.length === 0) {
+            await this.$store.dispatch("locationModule/addNewLocation", result);
+          }
+        });
+    },
+  },
+  computed: {
+    /*-------------Store Variable------------*/
+    locations() {
+      return this.$store.state.locationModule.locations;
+    },
+    /*---------------------------------------*/
+    header() {
+      let header = {
+        text: "",
+        icon: "",
+      };
+      if (this.settings === true) {
+        header.text = "Setting";
+        header.icon = "close";
+      } else {
+        header.text = "Weather";
+        header.icon = "setting";
+      }
+
+      return header;
+    },
+  },
 };
 </script>
+
+<style lang="scss">
+@import "@/assets/styles/global.scss";
+@import "@/assets/styles/mixins.scss";
+@import "@/assets/styles/function.scss";
+
+.weather-widget-header {
+  font-size: $large;
+  @include flexible("between");
+  color: $grey;
+  font-weight: 600;
+}
+
+.weather-widget-box {
+  width: 200px;
+  height: 483px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 15px darkColor(0.08);
+  padding: $defaultWhitespace;
+}
+
+.weather-widget-btn-setting:hover {
+  @include rotateAnimation();
+}
+</style>

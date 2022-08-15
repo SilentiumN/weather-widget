@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class CountriesService {
+class LocationService {
     async getNameCountry(isoCode) {
         return axios
             .post(
@@ -11,10 +11,14 @@ class CountriesService {
             .then(response => {
                 return response.data
             })
+            .catch(
+                error => {
+                    return error.response.data
+                }
+            )
     }
 
     async getCitiesFromCountry(countryName) {
-        console.log('countryName', countryName)
         return axios
             .post(
                 "https://countriesnow.space/api/v0.1/countries/cities", {  
@@ -22,12 +26,10 @@ class CountriesService {
                 }
             )
             .then(response => {
-                console.log('response', response)
                 return response.data
             })
             .catch(
                 error => {
-                    console.log('error', error.response.data)
                     return error.response.data
                 }
             )
@@ -39,10 +41,20 @@ class CountriesService {
                 "https://countriesnow.space/api/v0.1/countries/flag/unicode"
             )
             .then(response => {
-                console.log(response)
                 return response.data
             })
+            .catch(
+                error => {
+                    return error.response.data
+                }
+            )
+    }
+
+    async getPosition() {
+        return new Promise(function (resolve, reject) {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
     }
 }
 
-export default new CountriesService()
+export default new LocationService()

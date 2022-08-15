@@ -1,3 +1,5 @@
+@import 'function.scss';
+
 @mixin flexible($type) {
   width: 100%;
   display: flex;
@@ -31,4 +33,9 @@
     color: $white;
     background: $grey;
   }
+}
+
+@mixin rotateAnimation() {
+  animation: rotation 2s infinite linear;
+  -webkit-animation: rotation 2s infinite linear;
 }

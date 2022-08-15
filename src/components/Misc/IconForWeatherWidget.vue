@@ -24,11 +24,14 @@
         />
       </svg>
     </span>
-    <span v-if="name == 'sunset'">
+    <span
+      v-if="name == 'sunset'"
+      :style="{ width: iconSize + 'px', height: iconSize + 'px' }"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24px"
-        height="24px"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         :stroke="color"
@@ -47,11 +50,14 @@
         <polyline points="8 6 12 10 16 6" />
       </svg>
     </span>
-    <span v-if="name == 'sunrise'">
+    <span
+      v-if="name == 'sunrise'"
+      :style="{ width: iconSize + 'px', height: iconSize + 'px' }"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24px"
-        height="24px"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         :stroke="color"
@@ -72,8 +78,8 @@
     </span>
     <span v-if="name == 'wind'">
       <svg
-        width="24"
-        height="24"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -126,8 +132,8 @@
     </span>
     <span v-if="name == 'humidity'">
       <svg
-        width="24"
-        height="24"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -140,8 +146,8 @@
     </span>
     <span v-if="name == 'visibility'">
       <svg
-        width="24"
-        height="24"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -154,8 +160,8 @@
     </span>
     <span v-if="name == 'pressure'">
       <svg
-        width="24"
-        height="24"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -180,6 +186,8 @@
     </span>
     <span v-if="name == 'tempMin'">
       <svg
+        :width="iconSize"
+        :height="iconSize + 9"
         width="11"
         height="20"
         viewBox="0 0 11 20"
@@ -226,8 +234,8 @@
     </span>
     <span v-if="name == 'tempMax'">
       <svg
-        width="11"
-        height="20"
+        :width="iconSize"
+        :height="iconSize + 9"
         viewBox="0 0 11 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -338,12 +346,12 @@
     </span>
     <span
       v-if="name == 'spinner'"
-      :style="{ width: sizeStateIcon + 'px', height: sizeStateIcon + 'px' }"
-      class="spinner"
+      :style="{ width: iconSize + 'px', height: iconSize + 'px' }"
+      class="rotate-infinite-animation"
     >
       <svg
-        :width="sizeStateIcon"
-        :height="sizeStateIcon"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -356,11 +364,11 @@
     </span>
     <span
       v-if="name == 'done'"
-      :style="{ width: sizeStateIcon + 'px', height: sizeStateIcon + 'px' }"
+      :style="{ width: iconSize + 'px', height: iconSize + 'px' }"
     >
       <svg
-        :width="sizeStateIcon"
-        :height="sizeStateIcon"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -377,11 +385,11 @@
     </span>
     <span
       v-if="name == 'error'"
-      :style="{ width: sizeStateIcon + 'px', height: sizeStateIcon + 'px' }"
+      :style="{ width: iconSize + 'px', height: iconSize + 'px' }"
     >
       <svg
-        :width="sizeStateIcon"
-        :height="sizeStateIcon"
+        :width="iconSize"
+        :height="iconSize"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -450,11 +458,22 @@ export default {
       type: String,
       require: true,
     },
-    sizeStateIcon: {
+    iconSize: {
       type: Number,
       require: false,
     },
   },
 };
 </script>
-<style></style>
+
+<style lang="scss">
+@import "@/assets/styles/mixins.scss";
+
+.icon span {
+  display: flex;
+}
+
+.rotate-infinite-animation {
+  @include rotateAnimation();
+}
+</style>

@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="slow-show">
     <div v-if="tryAddedCity === false">
       <div v-if="addedCitySuccess == null">
         <!--Countries list-->
         <div v-if="loadedCountries">
           <!--Countries list get success-->
-          <div class="select-input" v-if="countries.length != 0">
+          <div class="location-add-select-iput slow-show" :class="disabledCountrySelect === 1 ? 'disabled-country-select' : ''" v-if="countries.length != 0">
             {{ countryValue }}
-            <select v-model="country">
+            <select v-model="country" :disabled="disabledCountrySelect">
               <option
                 v-for="(country, index) in countries"
                 :key="index"
@@ -18,13 +18,13 @@
             </select>
           </div>
           <!--Countries list get error-->
-          <div v-else class="add-city-success">Error getting countries</div>
+          <div v-else class="location-add-success slow-show">Error getting countries</div>
         </div>
 
         <!--Cities list-->
         <div v-if="country != null">
           <!--Cities list get success-->
-          <div class="select-input" v-if="loadedCities && cities.length != 0">
+          <div class="location-add-select-iput slow-show" v-if="loadedCities && cities.length != 0">
             {{ cityValue }}
             <select v-model="city">
               <option
@@ -39,57 +39,57 @@
           <!--Cities list get error-->
           <div
             v-else-if="loadedCities && cities.length === 0"
-            class="add-city-success"
+            class="location-add-success slow-show"
           >
             Cities in {{ country.name }} not found
           </div>
           <!--Cities list loading-->
-          <div v-else class="state-loading">
-            <State :sizeStateIcon="24" :color="'#555'" :state="'loading'" />
+          <div v-else class="state-loading slow-show">
+            <State :iconSize="24" :color="'#555'" :state="'loading'" />
           </div>
         </div>
 
         <!--Add button-->
         <button
           v-if="country != null && city != null"
-          class="add-new-city-btn"
+          class="btn location-add-btn slow-show"
           @click="addNewCity"
         >
           Add
         </button>
       </div>
     </div>
-    <!-- State Icon Box -->
-    <div>
+    <!-- State added location box -->
+    <div class="slow-show">
       <State
-        :sizeStateIcon="50"
-        :state="addedCitySuccess"
+        :iconSize="50"
+        :state="addedCitySuccess.success"
         v-if="addedCitySuccess != null"
       />
       <State
-        :sizeStateIcon="50"
+        :iconSize="50"
         :color="'#555'"
         :state="'loading'"
         v-if="tryAddedCity === true || loadedCountries === false"
       />
     </div>
     <div
-      class="add-city-success"
+      class="location-add-success"
       v-if="addedCitySuccess != null"
     >
-      {{ successInfo }}
+      {{ addedCitySuccess.msg }}
     </div>
-    <button class="add-new-city-btn" v-if="addedCitySuccess != null" @click="clearAddedCitySuccess">
+    <button class="btn location-add-btn" v-if="addedCitySuccess != null" @click="clearAddedCitySuccess">
       {{ successInfoBtn }}
     </button>
   </div>
 </template>
 
 <script>
-import Icon from "./General/Icon.vue";
-import State from "./State.vue";
+import IconForWeatherWidget from "@/components/Misc/IconForWeatherWidget.vue";
+import State from "@/components/Misc/State.vue";
 export default {
-  components: { Icon, State },
+  components: { IconForWeatherWidget, State },
   data() {
     return {
       countries: [],
@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     async getAllCountries() {
-      await this.$store.dispatch("getAllCountries").then((result) => {
+      await this.$store.dispatch("locationModule/getAllCountries").then((result) => {
         this.loadedCountries = true;
         this.countries = result;
       });
@@ -114,7 +114,7 @@ export default {
       this.city = null;
       this.cities = [];
       await this.$store
-        .dispatch("getCitiesFromCountry", country)
+        .dispatch("locationModule/getCitiesFromCountry", country)
         .then((result) => {
           this.loadedCities = true;
           this.cities = result;
@@ -122,14 +122,16 @@ export default {
     },
     async addNewCity() {
       this.tryAddedCity = true;
-      console.log("data", { country: this.country.iso2, city: this.city });
       await this.$store
-        .dispatch("addNewLocation", {
+        .dispatch("weatherModule/addNewWeather", {
           country: this.country.iso2,
           city: this.city,
         })
         .then((res) => {
-          this.addedCitySuccess = res;
+          this.addedCitySuccess = res.res_data;
+          if (res.location != null) {
+            this.$store.dispatch('locationModule/addNewLocation', res.location)
+          }
           this.tryAddedCity = false;
         });
     },
@@ -144,9 +146,7 @@ export default {
   },
   watch: {
     country: async function () {
-      console.log(this.country);
       if (this.country != null) {
-        console.log(this.country.name);
         await this.getCities(this.country.name);
       }
     },
@@ -166,22 +166,58 @@ export default {
         return "Chose country";
       }
     },
-    successInfo() {
-      if (this.addedCitySuccess === "done") {
-        return "City added";
-      } else {
-        return "City not found in Weather API";
-      }
-    },
     successInfoBtn() {
-      if (this.addedCitySuccess === "done") {
+      if (this.addedCitySuccess.success === "done") {
         return "Nice!";
       } else {
         return "Try add new city";
       }
     },
+    disabledCountrySelect() {
+      if (!this.loadedCities && this.country != null) {
+        return 1
+      }
+      else {
+        return 0
+      }
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style lang="scss">
+@import '@/assets/styles/global.scss';
+@import '@/assets/styles/mixins.scss';
+@import '@/assets/styles/function.scss';
+
+.location-add-select-iput {
+  @include locationCard("ligth");
+  position: relative;
+  font-size: $sm-plus;
+  select {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+}
+
+.location-add-btn {
+  @include locationCard("dark");
+  font-size: $sm-plus;
+  font-weight: 600;
+}
+
+.location-add-success {
+  margin-top: $defaultWhitespace;
+  color: $grey;
+  text-align: center;
+  font-size: $sm-plus;
+}
+
+.disabled-country-select {
+  background: darkColor(0.1);
+}
+</style>
