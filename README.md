@@ -44,17 +44,12 @@
 </html>
 ```
 
-## API-key for OpenWeatherAPI
-### If you want, you can change my API-key for your API-key.
+## API-key for OpenWeatherAPI (for developments)
 
-- You need open weather.services.js and change this line:
+- You need open .env in root folder and replace <YOUR_API_KEY> with your API_KEY from https://openweathermap.org
 ```
-path: /src/services/weather.services.js
-constructor() {
-  this.apikey = '<your_api_key_from>';
-}
+VUE_APP_OPEN_WEATHER_API_KEY="<YOUR_API_KEY>"
 ```
-- Where your_api_key_from is API-key from https://openweathermap.org
 
 ## Run project
 ### Install dependencies 
