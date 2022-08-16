@@ -1,23 +1,20 @@
 import axios from "axios";
 
 class WeatherService {
-    constructor() {
-        this.apikey = '673a5559a0536e9636be1ed282d0a897';
-    }
 
-    async getCurrentWeather(coord) {
+    async getCurrentWeather(coord, apikey) {
         return axios
             .get(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${coord.latitude}&lon=${coord.longitude}&appid=${this.apikey}&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?lat=${coord.latitude}&lon=${coord.longitude}&appid=${apikey}&units=metric`
             )
             .then(response => {
                 return response.data
             })
     }
-    async getWeather(country, city) {
+    async getWeather(country, city, apikey) {
         return axios
             .get(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=metric&appid=${this.apikey}&units=metric`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city},${country}&units=metric&appid=${apikey}&units=metric`
             )
             .then(response => {
                 return response.data

@@ -38,7 +38,8 @@ export const weatherModule = {
             for (const item of separateLocation) {
               await weatherServices.getWeather(
                 item.country,
-                item.city
+                item.city,
+                process.env.VUE_APP_OPEN_WEATHER_API_KEY
               ).then(async (result) => {
                 dispatch('saveWeather', result)
               });
@@ -58,7 +59,8 @@ export const weatherModule = {
         await weatherServices
           .getWeather(
             sendData.country,
-            sendData.city
+            sendData.city,
+            process.env.VUE_APP_OPEN_WEATHER_API_KEY
           )
           .then(async (result) => {
             if (result.cod != 404) {
@@ -93,7 +95,8 @@ export const weatherModule = {
           await weatherServices
             .getWeather(
               item.country,
-              item.city
+              item.city,
+              process.env.VUE_APP_OPEN_WEATHER_API_KEY
             )
             .then(async (result) => {
               newLocation = await dispatch("saveWeather", result);
@@ -109,7 +112,8 @@ export const weatherModule = {
             {
               latitude: locationsModule.latitude,
               longitude: locationsModule.longitude,
-            }
+            },
+            process.env.VUE_APP_OPEN_WEATHER_API_KEY
           )
           .then(async (result) => {
             newLocation = await dispatch("saveWeather", result);
